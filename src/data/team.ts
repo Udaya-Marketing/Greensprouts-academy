@@ -139,7 +139,7 @@ export const TRAINERS: Trainer[] = [
     qualification: "B.E. Agriculture Engineering",
     experience: "2+ Years Commercial Blueberry & CEA",
     location: "Commercial Farms · Tamil Nadu & Karnataka",
-    image: "/images/team/pradeep.png",
+    image: "/images/team/Pradeep.png",
     shortBio: "Hands-on experience in commercial blueberry farming and protected CEA; hydroponics, aeroponics, on-site material sourcing, and commercial crop setups.",
     expandedBio: "Pradeep is a crop specialist with deep hands-on expertise in high-value berry cultivation, particularly commercial protected blueberry orchards and soilless substrate systems. His engineering mindset combined with agronomic field practice gives students a realistic view of high-margin specialty crop management, irrigation automation, and disease scouting. He mentors advanced students scaling up from backyard trials to commercial land plots.",
     specialties: ["Blueberry Substrate Farming", "Commercial Aeroponics", "On-site Material Sourcing", "Project Setup"],

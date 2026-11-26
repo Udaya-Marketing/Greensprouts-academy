@@ -1,17 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { 
-  X, 
-  CheckCircle2, 
-  Sparkles, 
-  GraduationCap, 
-  Send, 
-  QrCode, 
-  ShieldCheck, 
-  CreditCard,
-  Copy,
-  Check
+import {
+  X,
+  CheckCircle2,
+  Sparkles,
+  GraduationCap,
+  Send,
+  ShieldCheck,
 } from "lucide-react";
 import { PROGRAMS } from "@/data/courses";
 import { PRICING_PLANS } from "@/data/pricing";
@@ -36,7 +32,6 @@ export default function QuickEnrollModal({
   const [selectedProgram, setSelectedProgram] = useState(defaultProgramSlug || "hydroponics");
   const [selectedPlan, setSelectedPlan] = useState(defaultPlanId || "standard");
   const [isStudent, setIsStudent] = useState(false);
-  const [copiedUpi, setCopiedUpi] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   if (!isOpen) return null;
@@ -47,12 +42,6 @@ export default function QuickEnrollModal({
   const basePrice = currentPlan.price;
   const discountAmount = isStudent ? Math.round(basePrice * 0.2) : 0;
   const finalPrice = basePrice - discountAmount;
-
-  const handleCopyUpi = () => {
-    navigator.clipboard.writeText(SITE_CONFIG.contact.upiId);
-    setCopiedUpi(true);
-    setTimeout(() => setCopiedUpi(false), 2000);
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -275,7 +264,7 @@ export default function QuickEnrollModal({
             </form>
           </div>
         ) : (
-          /* Submission Success View with UPI QR placeholder */
+          /* Submission Success View */
           <div className="text-center py-4 animate-fade-in">
             <div className="w-16 h-16 rounded-full bg-[#EAF5DC] text-[#8BC53F] flex items-center justify-center mx-auto mb-3 border border-[#DFECD8]">
               <CheckCircle2 className="w-10 h-10" />
@@ -289,38 +278,20 @@ export default function QuickEnrollModal({
               Your details for <strong>{programObj.title}</strong> ({currentPlan.name} Plan) have been reserved.
             </p>
 
-            {/* UPI & QR Section */}
             <div className="mt-5 p-4 rounded-2xl bg-white border border-[#D8E8CE] text-left">
               <div className="flex items-center justify-between border-b border-[#E8F0E2] pb-2.5 mb-3">
-                <span className="text-xs font-bold text-[#231F20] flex items-center gap-1.5">
-                  <QrCode className="w-4 h-4 text-[#8BC53F]" /> Complete Enrollment via UPI
-                </span>
-                <span className="text-base font-extrabold text-[#00693E]">₹{finalPrice}</span>
+                <span className="text-xs font-bold text-[#231F20]">Selected plan fee</span>
+                <span className="text-base font-extrabold text-[#00693E]">INR {finalPrice}</span>
               </div>
-
-              <div className="flex items-center justify-between bg-[#F7FAF4] p-2.5 rounded-xl border border-[#DFECD8]">
-                <div>
-                  <span className="text-[10px] text-[#5A7E68] uppercase font-bold block">UPI ID [PLACEHOLDER]</span>
-                  <code className="text-xs font-bold text-[#231F20]">{SITE_CONFIG.contact.upiId}</code>
-                </div>
-                <button
-                  onClick={handleCopyUpi}
-                  className="px-2.5 py-1 rounded-lg bg-white border border-[#DFECD8] text-xs font-bold text-[#00693E] hover:bg-[#EAF5DC] flex items-center gap-1"
-                >
-                  {copiedUpi ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                  {copiedUpi ? "Copied" : "Copy"}
-                </button>
-              </div>
-
               <p className="text-[11px] text-[#688E75] mt-2.5 leading-relaxed">
-                Scan or pay through GPay, PhonePe, or Paytm. Once transferred, send the payment screenshot or message <strong>"START"</strong> to our official WhatsApp line: <strong>{SITE_CONFIG.contact.phone}</strong>.
+                Our team will share payment instructions and your batch joining details on WhatsApp.
               </p>
             </div>
 
             <div className="mt-5 flex flex-col gap-2">
               <a
                 href={`https://wa.me/${SITE_CONFIG.contact.whatsapp}?text=${encodeURIComponent(
-                  `START - I have submitted my registration for ${programObj.title} (${currentPlan.name} Plan - ₹${finalPrice}). Please send my batch joining link.`
+                  `START - I have submitted my registration for ${programObj.title} (${currentPlan.name} Plan - INR ${finalPrice}). Please send my batch joining link.`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"

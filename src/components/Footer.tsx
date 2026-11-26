@@ -168,9 +168,6 @@ export default function Footer() {
                 </a>
               </div>
 
-              <div className="pt-1 text-[11px] text-[#53735D]">
-                UPI: <code className="bg-white px-1.5 py-0.5 rounded border border-[#DFECD8] font-mono">{SITE_CONFIG.contact.upiId}</code>
-              </div>
             </div>
           </div>
         </div>

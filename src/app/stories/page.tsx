@@ -24,28 +24,28 @@ export default function SuccessStoriesPage() {
     {
       title: "First Microgreens Harvest in 8 Days",
       grower: "Ananya R., Bengaluru",
-      image: "/images/gallery/IMG_4493.jpg",
+      image: "/images/gallery/IMG_3873.webp",
       metric: "6 Trays · Supplied to Organic Cafe",
       tag: "Microgreens",
     },
     {
       title: "Balcony Hydroponic Lettuce & Basil",
       grower: "Vikram S., Pune",
-      image: "/images/gallery/IMG_5170.jpg",
+      image: "/images/gallery/IMG_5215.webp",
       metric: "50 Plants Monthly · Zero Pesticides",
       tag: "Hydroponics",
     },
     {
       title: "Oyster Mushrooms Pinhead Flush",
       grower: "Deepak M., Hyderabad",
-      image: "/images/gallery/IMG_3801.jpg",
+      image: "/images/gallery/IMG_3801.webp",
       metric: "15 kg Yield · Spare Bedroom Setup",
       tag: "Mushroom Cultivation",
     },
     {
       title: "Indoor Flower Cultivation Showcase",
       grower: "Aditya & Priya, Jaipur",
-      image: "/images/gallery/IMG_0106.jpg",
+      image: "/images/gallery/IMG_0106.webp",
       metric: "Flowering Crops Grown in a Controlled Environment",
       tag: "Specialty Flowers",
     },
@@ -137,7 +137,7 @@ export default function SuccessStoriesPage() {
               Lifetime Alumni WhatsApp Group
             </h3>
             <p className="text-xs sm:text-sm text-[#2C3E32] mt-2 leading-relaxed">
-              When you enroll in Green Sprouts Academy, you never grow alone. Join over 1,200+ active growers across India sharing pH calibrations, seed deals, bulk buyer leads, and local market tips daily.
+              When you enroll in Green Sprouts Academy, you never grow alone. Join over 300+ active growers across India sharing pH calibrations, seed deals, bulk buyer leads, and local market tips daily.
             </p>
           </div>
 

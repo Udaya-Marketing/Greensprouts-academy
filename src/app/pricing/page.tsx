@@ -11,27 +11,17 @@ import {
   ArrowRight, 
   ShieldCheck, 
   Award, 
-  QrCode, 
-  Copy, 
-  Check,
+  MessageCircle,
   ChevronDown,
   Info
 } from "lucide-react";
 import { PRICING_PLANS, STARTER_KITS } from "@/data/pricing";
-import { SITE_CONFIG } from "@/data/siteConfig";
 import { useModals } from "@/components/ModalContext";
 
 export default function PricingPage() {
   const { openEnrollModal, openCertificateModal } = useModals();
   const [isStudentCalc, setIsStudentCalc] = useState(false);
-  const [copiedUpi, setCopiedUpi] = useState(false);
   const [activeKitTab, setActiveKitTab] = useState(0);
-
-  const handleCopyUpi = () => {
-    navigator.clipboard.writeText(SITE_CONFIG.contact.upiId);
-    setCopiedUpi(true);
-    setTimeout(() => setCopiedUpi(false), 2000);
-  };
 
   const comparisonFeatures = [
     { title: "3–5 Days Live Online Training (Evening Batches)", basic: true, standard: true, premium: true },
@@ -301,35 +291,31 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* 5. UPI / PAYMENT OPTIONS INFO */}
+      {/* 5. WHATSAPP REGISTRATION */}
       <section className="bg-white border border-[#DFECD8] rounded-3xl p-6 sm:p-8 shadow-sm">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="space-y-2">
             <span className="badge-pill badge-pill-lime text-xs">
-              <QrCode className="w-3.5 h-3.5 text-[#8BC53F]" />
-              Direct Mobile Payment
+              <MessageCircle className="w-3.5 h-3.5 text-[#8BC53F]" />
+              WhatsApp Registration
             </span>
             <h3 className="text-xl sm:text-2xl font-bold text-[#231F20]">
-              Pay Seamlessly via UPI / GPay / PhonePe
+              DM us to register
             </h3>
             <p className="text-xs text-[#2C3E32] max-w-lg">
-              We support direct UPI transfer, Net Banking, and card payments. Once registered, simply send a transaction screenshot on WhatsApp to receive your instant batch schedule.
+              Message our WhatsApp support team to register and get help choosing your program.
             </p>
           </div>
 
-          <div className="bg-[#F6FAEF] p-4 rounded-2xl border border-[#DFECD8] flex flex-col items-center gap-2 shrink-0">
-            <span className="text-[10px] uppercase font-bold text-[#5C8069]">Official UPI ID [PLACEHOLDER]</span>
-            <code className="text-sm font-extrabold text-[#231F20] bg-white px-3 py-1 rounded-lg border border-[#DFECD8]">
-              {SITE_CONFIG.contact.upiId}
-            </code>
-            <button
-              onClick={handleCopyUpi}
-              className="px-3 py-1 rounded-lg bg-white border border-[#DFECD8] text-xs font-bold text-[#00693E] hover:bg-[#EAF5DC] flex items-center gap-1.5 transition-all"
-            >
-              {copiedUpi ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-              {copiedUpi ? "Copied to clipboard!" : "Copy UPI ID"}
-            </button>
-          </div>
+          <a
+            href="https://wa.me/919027568753?text=START"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary py-3 px-6 font-bold rounded-xl shrink-0"
+          >
+            <MessageCircle className="w-4 h-4" />
+            WhatsApp Support: +91 90275 68753
+          </a>
         </div>
       </section>
     </div>

@@ -16,7 +16,7 @@ interface GalleryItem {
 const GALLERY_ITEMS: GalleryItem[] = [
   {
     id: "g1",
-    src: "/images/gallery/IMG_4492.jpg",
+    src: "/images/gallery/IMG_3873.webp",
     alt: "Vibrant organic microgreen harvest in natural greenhouse light",
     caption: "Microgreens Live Workshop: Nutrient-rich radish, pea shoots and sweet basil shoots harvested in 10 days.",
     mask: "arch",
@@ -25,7 +25,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
   },
   {
     id: "g2",
-    src: "/images/gallery/IMG_0488.jpg",
+    src: "/images/gallery/IMG_0488.webp",
     alt: "Commercial vertical hydroponic NFT rack system canopy",
     caption: "Commercial NFT Hydroponics: High-density leafy greens cultivated with 90% water conservation.",
     mask: "rounded",
@@ -34,7 +34,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
   },
   {
     id: "g3",
-    src: "/images/gallery/IMG_3801.jpg",
+    src: "/images/gallery/IMG_3801.webp",
     alt: "White oyster mushroom fruiting bag in climate chamber",
     caption: "Gourmet Mushroom Cultivation: High-yield oyster and milky mushroom flushes in urban darkrooms.",
     mask: "circle",
@@ -43,7 +43,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
   },
   {
     id: "g4",
-    src: "/images/gallery/IMG_0214.jpg",
+    src: "/images/gallery/IMG_0214.webp",
     alt: "Indoor climate-controlled high-value botanical blooms",
     caption: "Indoor CEA Specialty: Precision temperature and RH cycling for boutique spice and edible botanical production.",
     mask: "leaf",
@@ -52,7 +52,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
   },
   {
     id: "g5",
-    src: "/images/gallery/IMG_4144.jpg",
+    src: "/images/gallery/IMG_4144.webp",
     alt: "Aquaculture fish splashing in aquaponics RAS tank",
     caption: "Aquaponics Engineering: Zero chemical fertilizer organic farming utilizing bio-filtered fish waste.",
     mask: "scallop",
@@ -61,7 +61,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
   },
   {
     id: "g6",
-    src: "/images/gallery/IMG_4067.jpg",
+    src: "/images/gallery/IMG_4067.webp",
     alt: "Vertical A-frame hydroponic system with thriving green seedlings",
     caption: "Balcony Agripreneurship: Converting 60 sq. ft. of domestic space into fresh weekly greens.",
     mask: "arch",
@@ -70,7 +70,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
   },
   {
     id: "g7",
-    src: "/images/gallery/IMG_4590.jpg",
+    src: "/images/gallery/IMG_0429_1.webp",
     alt: "Arid climate protected polyhouse in Oman",
     caption: "Middle East CEA Deployment: 45°C+ arid climate greenhouse automation in Oman.",
     mask: "rounded",
@@ -79,7 +79,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
   },
   {
     id: "g8",
-    src: "/images/gallery/IMG_0065.jpg",
+    src: "/images/gallery/IMG_0065.webp",
     alt: "Healthy fish in a clear aquaculture tank",
     caption: "Aquaculture: Monitoring healthy fish in a recirculating water system.",
     mask: "circle",
@@ -88,7 +88,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
   },
   {
     id: "g9",
-    src: "/images/gallery/IMG_4416.jpg",
+    src: "/images/gallery/IMG_4416.webp",
     alt: "Students taking part in a hands-on agriculture training session",
     caption: "Hands-on Training: Students learning practical farming techniques at a greenhouse.",
     mask: "leaf",
@@ -97,7 +97,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
   },
   {
     id: "g10",
-    src: "/images/gallery/IMG_4429.jpg",
+    src: "/images/gallery/IMG_4429.webp",
     alt: "Agriculture trainees gathered at a greenhouse",
     caption: "Student Community: Trainees sharing their experience at a commercial growing facility.",
     mask: "scallop",
@@ -105,6 +105,9 @@ const GALLERY_ITEMS: GalleryItem[] = [
     tag: "Student Community",
   },
 ];
+
+const getCardStart = (container: HTMLDivElement, card: Element) =>
+  card.getBoundingClientRect().left - container.getBoundingClientRect().left + container.scrollLeft;
 
 export default function SidewaysImageStrip() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -114,44 +117,128 @@ export default function SidewaysImageStrip() {
   const startXRef = useRef<number>(0);
   const scrollLeftStartRef = useRef<number>(0);
   const hasDraggedRef = useRef<boolean>(false);
+  const cycleWidthRef = useRef<number>(0);
+  const pauseAutoplayUntilRef = useRef<number>(0);
 
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [activeDot, setActiveDot] = useState<number>(0);
-  const [canScrollLeft, setCanScrollLeft] = useState<boolean>(false);
-  const [canScrollRight, setCanScrollRight] = useState<boolean>(true);
 
-  // Update scroll arrows and dot indicator based on scroll position
+  const pauseAutoplayBriefly = () => {
+    pauseAutoplayUntilRef.current = performance.now() + 2500;
+  };
+
+  const updateCycleWidth = useCallback(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+
+    const firstCopyCard = el.children[0];
+    const middleCopyCard = el.children[GALLERY_ITEMS.length];
+    if (firstCopyCard && middleCopyCard) {
+      cycleWidthRef.current = getCardStart(el, middleCopyCard) - getCardStart(el, firstCopyCard);
+    }
+  }, []);
+
+  // Keep the track in its center copy so scrolling can wrap in either direction.
   const handleScroll = useCallback(() => {
     const el = scrollContainerRef.current;
     if (!el) return;
 
-    const scrollLeft = el.scrollLeft;
-    const maxScroll = el.scrollWidth - el.clientWidth;
+    const firstMiddleCard = el.children[GALLERY_ITEMS.length];
+    const centerStart = firstMiddleCard ? getCardStart(el, firstMiddleCard) : 0;
+    const cycleWidth = cycleWidthRef.current;
+    let position = el.scrollLeft;
 
-    setCanScrollLeft(scrollLeft > 10);
-    setCanScrollRight(scrollLeft < maxScroll - 10);
+    if (cycleWidth > 0 && position < centerStart) {
+      el.scrollLeft = position + cycleWidth;
+      position += cycleWidth;
+    } else if (cycleWidth > 0 && position >= centerStart + cycleWidth) {
+      el.scrollLeft = position - cycleWidth;
+      position -= cycleWidth;
+    }
 
-    const cardWidth = 320;
-    const index = Math.min(
-      Math.max(0, Math.round(scrollLeft / cardWidth)),
-      GALLERY_ITEMS.length - 1
-    );
-    setActiveDot(index);
+    let closestIndex = 0;
+    let closestDistance = Number.POSITIVE_INFINITY;
+    Array.from(el.children).forEach((card, index) => {
+      const distance = Math.abs(getCardStart(el, card) - position);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = index % GALLERY_ITEMS.length;
+      }
+    });
+    setActiveDot(closestIndex);
   }, []);
 
-  // Keep the gallery position independent of vertical page scrolling.
+  // Start on the middle copy and recalculate after responsive width changes.
   useEffect(() => {
-    handleScroll();
-    window.addEventListener("resize", handleScroll);
-    return () => window.removeEventListener("resize", handleScroll);
-  }, [handleScroll]);
-
-  // Button scroll handler: smoothly shifts strip left or right by card width
-  const scrollByAmount = (direction: "left" | "right") => {
     const el = scrollContainerRef.current;
     if (!el) return;
 
-    const shift = 340;
+    const positionAtMiddle = () => {
+      updateCycleWidth();
+      const firstMiddleCard = el.children[GALLERY_ITEMS.length];
+      if (firstMiddleCard) el.scrollLeft = getCardStart(el, firstMiddleCard);
+      handleScroll();
+    };
+
+    positionAtMiddle();
+    window.addEventListener("resize", positionAtMiddle);
+    return () => window.removeEventListener("resize", positionAtMiddle);
+  }, [handleScroll, updateCycleWidth]);
+
+  // Drift right continuously; the duplicated track lets handleScroll wrap it seamlessly.
+  useEffect(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+
+    let animationFrame = 0;
+    let previousTime = 0;
+    const pixelsPerMillisecond = 0.06;
+
+    const animate = (time: number) => {
+      if (!previousTime) previousTime = time;
+      const elapsed = Math.min(time - previousTime, 50);
+      previousTime = time;
+
+      if (
+        document.visibilityState === "visible" &&
+        !selectedItem &&
+        !isDraggingRef.current &&
+        time >= pauseAutoplayUntilRef.current
+      ) {
+        el.scrollLeft += elapsed * pixelsPerMillisecond;
+      }
+
+      animationFrame = window.requestAnimationFrame(animate);
+    };
+
+    animationFrame = window.requestAnimationFrame(animate);
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, [selectedItem]);
+
+  // Keep loop width current if the cards finish loading after initial layout.
+  useEffect(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+
+    const refresh = () => {
+      updateCycleWidth();
+      handleScroll();
+    };
+    handleScroll();
+    el.addEventListener("load", refresh, true);
+    return () => el.removeEventListener("load", refresh, true);
+  }, [handleScroll, updateCycleWidth]);
+
+  // Button scroll handler: smoothly shifts strip left or right by card width
+  const scrollByAmount = (direction: "left" | "right") => {
+    pauseAutoplayBriefly();
+    const el = scrollContainerRef.current;
+    if (!el) return;
+
+    const elCard = el.children[GALLERY_ITEMS.length + activeDot] as HTMLElement | undefined;
+    const cardWidth = elCard?.getBoundingClientRect().width ?? 320;
+    const gap = Number.parseFloat(getComputedStyle(el).columnGap) || 0;
+    const shift = cardWidth + gap;
     el.scrollBy({
       left: direction === "left" ? -shift : shift,
       behavior: "smooth",
@@ -160,12 +247,15 @@ export default function SidewaysImageStrip() {
 
   // Jump to specific item using navigation dots
   const scrollToItem = (index: number) => {
+    pauseAutoplayBriefly();
     const el = scrollContainerRef.current;
     if (!el) return;
 
-    const shift = 320;
+    const card = el.children[GALLERY_ITEMS.length + index];
+    if (!card) return;
+
     el.scrollTo({
-      left: index * shift,
+      left: getCardStart(el, card),
       behavior: "smooth",
     });
     setActiveDot(index);
@@ -173,6 +263,7 @@ export default function SidewaysImageStrip() {
 
   // Mouse drag handlers for desktop smooth dragging
   const onMouseDown = (e: React.MouseEvent) => {
+    pauseAutoplayBriefly();
     const el = scrollContainerRef.current;
     if (!el) return;
     isDraggingRef.current = true;
@@ -300,8 +391,7 @@ export default function SidewaysImageStrip() {
             <button
               type="button"
               onClick={() => scrollByAmount("left")}
-              disabled={!canScrollLeft}
-              className="w-8 h-8 rounded-full bg-[#EAF5DC] border border-[#B5DF93] flex items-center justify-center text-[#00693E] hover:bg-[#8BC53F] hover:text-[#1E1E1E] transition-colors disabled:opacity-35 disabled:pointer-events-none shadow-xs"
+              className="w-8 h-8 rounded-full bg-[#EAF5DC] border border-[#B5DF93] flex items-center justify-center text-[#00693E] hover:bg-[#8BC53F] hover:text-[#1E1E1E] transition-colors shadow-xs"
               aria-label="Scroll left in gallery"
               title="Scroll left"
             >
@@ -310,8 +400,7 @@ export default function SidewaysImageStrip() {
             <button
               type="button"
               onClick={() => scrollByAmount("right")}
-              disabled={!canScrollRight}
-              className="w-8 h-8 rounded-full bg-[#EAF5DC] border border-[#B5DF93] flex items-center justify-center text-[#00693E] hover:bg-[#8BC53F] hover:text-[#1E1E1E] transition-colors disabled:opacity-35 disabled:pointer-events-none shadow-xs"
+              className="w-8 h-8 rounded-full bg-[#EAF5DC] border border-[#B5DF93] flex items-center justify-center text-[#00693E] hover:bg-[#8BC53F] hover:text-[#1E1E1E] transition-colors shadow-xs"
               aria-label="Scroll right in gallery"
               title="Scroll right"
             >
@@ -329,19 +418,24 @@ export default function SidewaysImageStrip() {
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUpOrLeave}
         onMouseLeave={onMouseUpOrLeave}
+        onPointerDown={pauseAutoplayBriefly}
+        onWheel={pauseAutoplayBriefly}
         className="w-full max-w-full overflow-x-auto flex items-center gap-6 sm:gap-10 px-4 sm:px-8 py-4 cursor-grab active:cursor-grabbing select-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         style={{
           WebkitOverflowScrolling: "touch",
         }}
       >
-        {GALLERY_ITEMS.map((item) => {
+        {[0, 1, 2].flatMap((copy) => GALLERY_ITEMS.map((item, index) => {
           const maskClass = getMaskClass(item.mask);
 
           return (
             <div
-              key={item.id}
+              key={`${copy}-${item.id}`}
               role="button"
-              tabIndex={0}
+              tabIndex={copy === 1 ? 0 : -1}
+              aria-hidden={copy !== 1}
+              data-gallery-copy={copy}
+              data-gallery-index={index}
               onClick={() => {
                 if (!hasDraggedRef.current) {
                   setSelectedItem(item);
@@ -389,7 +483,7 @@ export default function SidewaysImageStrip() {
               </div>
             </div>
           );
-        })}
+        }))}
       </div>
 
       {/* Navigation Dot Indicators */}

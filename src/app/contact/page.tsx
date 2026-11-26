@@ -9,9 +9,6 @@ import {
   MapPin, 
   GraduationCap, 
   ShieldCheck, 
-  QrCode, 
-  Copy, 
-  Check, 
   Clock, 
   Sparkles,
   ExternalLink
@@ -29,7 +26,6 @@ export default function ContactPage() {
   const [selectedPlan, setSelectedPlan] = useState("standard");
   const [isStudent, setIsStudent] = useState(false);
   const [notes, setNotes] = useState("");
-  const [copiedUpi, setCopiedUpi] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const planObj = PRICING_PLANS.find((p) => p.id === selectedPlan) || PRICING_PLANS[1];
@@ -38,12 +34,6 @@ export default function ContactPage() {
   const basePrice = planObj.price;
   const discountAmount = isStudent ? Math.round(basePrice * 0.2) : 0;
   const finalPrice = basePrice - discountAmount;
-
-  const handleCopyUpi = () => {
-    navigator.clipboard.writeText(SITE_CONFIG.contact.upiId);
-    setCopiedUpi(true);
-    setTimeout(() => setCopiedUpi(false), 2000);
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -124,7 +114,7 @@ export default function ContactPage() {
                     href={`mailto:${SITE_CONFIG.contact.email}`}
                     className="text-[#00693E] font-semibold hover:underline block"
                   >
-                    {SITE_CONFIG.contact.email} <span className="text-[10px] text-[#8BC53F]">[PLACEHOLDER]</span>
+                    {SITE_CONFIG.contact.email}
                   </a>
                   <p className="text-[11px] text-[#557861] mt-0.5">
                     For enterprise, college workshops, and student ID verification.
@@ -175,31 +165,6 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* UPI Payment Box */}
-          <div className="bg-[#FFFFFF] border border-[#DFECD8] rounded-3xl p-6 shadow-sm space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-[#231F20] flex items-center gap-1.5">
-                <QrCode className="w-4 h-4 text-[#8BC53F]" /> UPI QR & Payment Info
-              </span>
-              <span className="text-xs font-bold text-[#00693E] bg-[#EAF5DC] px-2 py-0.5 rounded">
-                Instant Confirmation
-              </span>
-            </div>
-
-            <div className="p-3 bg-[#F6FAEF] rounded-2xl border border-[#DFECD8] flex items-center justify-between">
-              <div>
-                <span className="text-[10px] uppercase font-bold text-[#5A7E68] block">UPI ID [PLACEHOLDER]</span>
-                <code className="text-xs font-bold text-[#231F20]">{SITE_CONFIG.contact.upiId}</code>
-              </div>
-              <button
-                onClick={handleCopyUpi}
-                className="px-2.5 py-1 rounded-lg bg-white border border-[#DFECD8] text-xs font-bold text-[#00693E] hover:bg-[#EAF5DC] flex items-center gap-1"
-              >
-                {copiedUpi ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                {copiedUpi ? "Copied" : "Copy"}
-              </button>
-            </div>
-          </div>
         </div>
 
         {/* Right Column: 2-Minute Registration Form (7 cols) */}

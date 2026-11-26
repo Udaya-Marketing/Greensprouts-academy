@@ -27,14 +27,6 @@ export default function GalleryPage() {
     return item.category === selectedFilter;
   });
 
-  // Keep the 9-image mosaic intact and show any remaining items in a trailing grid.
-  const fullBlockCount = Math.floor(filteredItems.length / 9);
-  const desktopImages = filteredItems.slice(0, fullBlockCount * 9);
-  const desktopRemainderImages = filteredItems.slice(fullBlockCount * 9);
-
-  // Tablet & mobile use justified rows layout so all filtered images show flush
-  const mobileImages = filteredItems;
-
   // Active list for lightbox navigation
   const currentImagesList = filteredItems;
 
@@ -68,45 +60,6 @@ export default function GalleryPage() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [lightboxIndex, handleClose, handlePrev, handleNext]);
-
-  // Desktop slot styles for the 9-image repeating block
-  const getDesktopSlotStyle = (index: number) => {
-    const blockIndex = Math.floor(index / 9);
-    const slot = index % 9;
-    const baseRow = blockIndex * 4 + 1;
-
-    switch (slot) {
-      // Row 1-2: portrait (col 1, 2 rows tall)
-      case 0:
-        return { gridColumn: "1 / 2", gridRow: `${baseRow} / span 2` };
-      // Row 1: landscape (cols 2-3, row 1)
-      case 1:
-        return { gridColumn: "2 / 4", gridRow: `${baseRow} / span 1` };
-      // Row 1-2: portrait (col 4, 2 rows tall)
-      case 2:
-        return { gridColumn: "4 / 5", gridRow: `${baseRow} / span 2` };
-      // Row 2: square (col 2, row 2)
-      case 3:
-        return { gridColumn: "2 / 3", gridRow: `${baseRow + 1} / span 1` };
-      // Row 2: square (col 3, row 2)
-      case 4:
-        return { gridColumn: "3 / 4", gridRow: `${baseRow + 1} / span 1` };
-      // Row 3-4: portrait (col 1, 2 rows tall)
-      case 5:
-        return { gridColumn: "1 / 2", gridRow: `${baseRow + 2} / span 2` };
-      // Row 3-4: portrait (col 2, 2 rows tall)
-      case 6:
-        return { gridColumn: "2 / 3", gridRow: `${baseRow + 2} / span 2` };
-      // Row 3: landscape (cols 3-4, row 3)
-      case 7:
-        return { gridColumn: "3 / 5", gridRow: `${baseRow + 2} / span 1` };
-      // Row 4: landscape (cols 3-4, row 4)
-      case 8:
-        return { gridColumn: "3 / 5", gridRow: `${baseRow + 3} / span 1` };
-      default:
-        return {};
-    }
-  };
 
   const selectedPhoto = lightboxIndex !== null ? currentImagesList[lightboxIndex] : null;
 
@@ -237,86 +190,25 @@ export default function GalleryPage() {
           </div> */}
         </div>
 
-        {/*
-          DESKTOP GRID:
-          Complete 9-image blocks use the 4-column mosaic; any trailing images
-          are shown in a separate grid so no photos are omitted.
-        */}
-        <div className="hidden lg:grid grid-cols-4 [grid-auto-rows:220px] gap-4">
-          {desktopImages.map((photo, index) => (
-            <div
-              key={`desk-${photo.id}-${index}`}
-              style={getDesktopSlotStyle(index)}
-              onClick={() => {
-                const foundIndex = currentImagesList.findIndex((p) => p.id === photo.id);
-                setLightboxIndex(foundIndex >= 0 ? foundIndex : index);
-              }}
-              className="relative overflow-hidden rounded-2xl cursor-pointer group shadow-xs hover:shadow-md border border-[#DFECD8] bg-[#EAF5DC]"
-            >
-              <img
-                src={photo.image}
-                alt={photo.alt || photo.title}
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
-              />
-            </div>
-          ))}
-        </div>
-
-        {desktopRemainderImages.length > 0 && (
-          <div
-            className="hidden lg:grid [grid-auto-rows:220px] gap-4"
-            style={{
-              gridTemplateColumns: `repeat(${Math.min(desktopRemainderImages.length, 2)}, minmax(0, 1fr))`,
-            }}
-          >
-            {desktopRemainderImages.map((photo, index) => (
-              <div
-                key={`desk-remainder-${photo.id}-${index}`}
-                onClick={() => {
-                  const foundIndex = currentImagesList.findIndex((p) => p.id === photo.id);
-                  setLightboxIndex(foundIndex >= 0 ? foundIndex : index);
-                }}
-                className="relative overflow-hidden rounded-2xl cursor-pointer group shadow-xs hover:shadow-md border border-[#DFECD8] bg-[#EAF5DC]"
-              >
-                <img
-                  src={photo.image}
-                  alt={photo.alt || photo.title}
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
-                />
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* 
-          TABLET & MOBILE:
-          Justified-rows layout where each image flex-grow equals its aspect ratio.
-          Rows stay completely flush and aligned whether portrait or landscape.
-        */}
-        <div className="flex flex-wrap gap-3 lg:hidden">
-          {mobileImages.map((photo, index) => (
-            <div
-              key={`mob-${photo.id}-${index}`}
+        {/* Each card keeps the source image's natural orientation at every size. */}
+        <div className="columns-2 gap-3 sm:columns-3 sm:gap-4 lg:columns-4">
+          {filteredItems.map((photo, index) => (
+            <button
+              type="button"
+              key={`gallery-${photo.id}`}
               onClick={() => setLightboxIndex(index)}
-              style={{
-                flexGrow: photo.aspectRatio,
-                flexBasis: `${photo.aspectRatio * 150}px`,
-                height: "200px",
-              }}
-              className="relative overflow-hidden rounded-2xl cursor-pointer group shadow-xs hover:shadow-md border border-[#DFECD8] bg-[#EAF5DC]"
+              aria-label={`Open ${photo.title}`}
+              style={{ aspectRatio: String(photo.aspectRatio) }}
+              className="group mb-3 inline-block w-full break-inside-avoid overflow-hidden rounded-2xl border border-[#DFECD8] bg-[#EAF5DC] shadow-xs hover:shadow-md sm:mb-4"
             >
               <img
                 src={photo.image}
                 alt={photo.alt || photo.title}
                 loading="lazy"
                 decoding="async"
-                className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
+                className="block h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
               />
-            </div>
+            </button>
           ))}
         </div>
       </section>

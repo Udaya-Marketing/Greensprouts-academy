@@ -23,7 +23,7 @@ import { SITE_CONFIG } from "@/data/siteConfig";
 import { PROGRAMS } from "@/data/courses";
 import { PRICING_PLANS } from "@/data/pricing";
 import { TRAINERS } from "@/data/team";
-import { TESTIMONIALS } from "@/data/testimonials";
+import { STUDENT_FEEDBACK } from "./stories/feedback-data";
 import { useModals } from "@/components/ModalContext";
 import BeforeAfterSlider from "@/components/BeforeAfterSlider";
 import ProfitCalculator from "@/components/ProfitCalculator";
@@ -252,7 +252,7 @@ export default function HomePage() {
                 Attend 3–5 Days Live Online Sessions
               </h3>
               <p className="text-xs sm:text-sm text-[#2C3E32] mt-2 leading-relaxed">
-                Join our B.Sc and B.E. agronomists live on Google Meet in comfortable evening batches (7:30 PM). Formulate nutrients, assemble your system, and ask your questions live.
+                Join our B.Sc and B.E. agronomists live on Google Meet in comfortable morning and evening batches or weekend batches. Formulate nutrients, assemble your system, and ask your questions live.
               </p>
               <div className="mt-4 pt-4 border-t border-[#DFECD8] flex items-center gap-2 text-xs text-[#53735D]">
                 <Users className="w-4 h-4 text-[#8BC53F]" /> Live faculty Q&A every session
@@ -539,39 +539,29 @@ export default function HomePage() {
             <h2 className="heading-headline text-3xl sm:text-4xl text-[#231F20] mt-2">
               Stories from our <span className="text-[#00693E]">urban agripreneurs</span>
             </h2>
-            <p className="text-xs text-[#53735D] mt-1.5">
-              [Clearly marked sample student feedback for demonstration until live verified reviews are provided]
-            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            {TESTIMONIALS.slice(0, 3).map((item) => (
+            {STUDENT_FEEDBACK.filter((item) =>
+              item.show !== false &&
+              ["SUBATHARANI.S", "SAHARINI.S", "K Divyadharshini"].includes(item.name)
+            ).map((item) => (
               <div
-                key={item.id}
+                key={item.name}
                 className="bg-white border border-[#B5DF93] rounded-3xl p-6 sm:p-7 shadow-sm flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center gap-1 text-[#8BC53F] mb-3 text-xs">
                     {"★".repeat(item.rating)}
-                    <span className="text-[11px] font-bold text-[#00693E] ml-2">{item.batch}</span>
                   </div>
 
                   <p className="text-xs sm:text-sm text-[#2C3E32] leading-relaxed font-normal">
-                    "{item.quote}"
+                    "{item.text}"
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-[#DFECD8] flex items-center justify-between">
-                  <div>
-                    <h4 className="font-bold text-xs sm:text-sm text-[#231F20]">{item.name}</h4>
-                    <p className="text-[11px] text-[#53735D]">{item.role}</p>
-                    <p className="text-[10px] text-[#53735D]">{item.location}</p>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-[10px] font-bold text-[#00693E] bg-[#EAF5DC] px-2 py-0.5 rounded-full border border-[#B5DF93]">
-                      {item.harvestMetric}
-                    </span>
-                  </div>
+                <div className="mt-6 pt-4 border-t border-[#DFECD8]">
+                  <h4 className="font-bold text-xs sm:text-sm text-[#231F20]">{item.name}</h4>
                 </div>
               </div>
             ))}

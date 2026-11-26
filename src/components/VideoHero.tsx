@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useRef, useEffect, useState } from "react";
-import { ArrowUpRight, ChevronDown, Sparkles } from "lucide-react";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { SITE_CONFIG } from "@/data/siteConfig";
 
-import { gsap } from "gsap";
 
 interface VideoHeroProps {
   onOpenEnrollModal?: () => void;
@@ -16,93 +15,33 @@ export default function VideoHero({
   nextSectionId = "scroll-experience-section",
 }: VideoHeroProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const heroContainerRef = useRef<HTMLElement>(null);
-  const backdropRef = useRef<HTMLDivElement>(null);
-  const eyebrowRef = useRef<HTMLSpanElement>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
-  const sublineRef = useRef<HTMLParagraphElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
-  const [videoLoaded, setVideoLoaded] = useState(false);
   const [usePosterOnly, setUsePosterOnly] = useState(false);
 
   useEffect(() => {
-    // Check reduced motion or slow connection
+    // Keep the first paint visible and static; defer the decorative video.
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const isSaveData = (navigator as unknown as { connection?: { saveData?: boolean } })?.connection?.saveData;
+    const connection = (navigator as unknown as {
+      connection?: { saveData?: boolean; effectiveType?: string };
+    }).connection;
+    const isSlowConnection = connection?.saveData || ["slow-2g", "2g"].includes(connection?.effectiveType ?? "");
 
-    if (prefersReducedMotion || isSaveData) {
+    if (prefersReducedMotion || isSlowConnection) {
       setUsePosterOnly(true);
-      if (videoRef.current) {
-        videoRef.current.pause();
-      }
       return;
     }
 
-    // Intro choreography sequence (under 2 seconds total)
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline();
-
-      // 1. Soft fade-in of poster and video (opacity 0 to 1 over 1s)
-      if (backdropRef.current) {
-        tl.fromTo(
-          backdropRef.current,
-          { opacity: 0 },
-          { opacity: 1, duration: 1.0, ease: "power2.out" },
-          0
-        );
-      }
-
-      // 2. Eyebrow quick fade + slide
-      if (eyebrowRef.current) {
-        tl.fromTo(
-          eyebrowRef.current,
-          { opacity: 0, y: 12 },
-          { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" },
-          0.2
-        );
-      }
-
-      // 3. Hero headline line-by-line reveal
-      if (headlineRef.current) {
-        tl.fromTo(
-          headlineRef.current,
-          { opacity: 0, y: 24 },
-          { opacity: 1, y: 0, duration: 0.85, ease: "power3.out" },
-          0.35
-        );
-      }
-
-      // 4. Subline soft reveal
-      if (sublineRef.current) {
-        tl.fromTo(
-          sublineRef.current,
-          { opacity: 0, y: 18 },
-          { opacity: 1, y: 0, duration: 0.65, ease: "power3.out" },
-          0.55
-        );
-      }
-
-      // 5. CTA buttons fade + 16px slide-up
-      if (ctaRef.current) {
-        tl.fromTo(
-          ctaRef.current,
-          { opacity: 0, y: 16 },
-          { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" },
-          0.8
-        );
-      }
-    }, heroContainerRef);
-
-    // IntersectionObserver to pause video when off-screen
     const currentVideo = videoRef.current;
-    if (!currentVideo) return () => ctx.revert();
+    if (!currentVideo) return;
+    let playTimer: ReturnType<typeof setTimeout> | null = null;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            currentVideo.play().catch(() => { });
+            playTimer = setTimeout(() => currentVideo.play().catch(() => {}), 1400);
           } else {
+            if (playTimer) clearTimeout(playTimer);
+            playTimer = null;
             currentVideo.pause();
           }
         });
@@ -114,7 +53,7 @@ export default function VideoHero({
 
     return () => {
       observer.disconnect();
-      ctx.revert();
+      if (playTimer) clearTimeout(playTimer);
     };
   }, []);
 
@@ -129,38 +68,34 @@ export default function VideoHero({
 
   return (
     <section
-      ref={heroContainerRef}
       data-reveal="none"
       className="relative w-full min-h-[92vh] sm:min-h-screen flex items-end pb-12 sm:pb-20 pt-16 overflow-hidden"
     >
       {/* Background Video / Bright Poster Fallback */}
       <div
-        ref={backdropRef}
         className="absolute inset-0 w-full h-full overflow-hidden bg-[#F6FAEF]"
       >
         {!usePosterOnly && (
           <video
             ref={videoRef}
-            autoPlay
             muted
             loop
             playsInline
-            preload="metadata"
-            poster="/assets/hero-poster.jpg"
+            preload="none"
+            poster="/assets/hero-poster.webp"
             disablePictureInPicture
             disableRemotePlayback
             controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
-            onLoadedData={() => setVideoLoaded(true)}
             onError={() => setUsePosterOnly(true)}
             className="w-full h-full object-cover object-center pointer-events-none select-none"
           >
-            <source src="/assets/herovideo1.mp4" type="video/mp4" />
+            <source src="/assets/herovideo1-optimized.mp4" type="video/mp4" />
           </video>
         )}
 
         {usePosterOnly && (
           <img
-            src="/assets/hero-poster.jpg"
+            src="/assets/hero-poster.webp"
             alt="Green Sprouts Academy greenhouse"
             className="w-full h-full object-cover object-center"
           />
@@ -191,22 +126,22 @@ export default function VideoHero({
         {/* Soft Frosted-White Panel on Bottom-Left */}
         <div className="bg-white/2 backdrop-blur border border-[#B5DF93]/60 rounded-3xl p-6 sm:p-10 max-w-2xl shadow-xl transition-all">
           {/* Eyebrow Echoing Logo */}
-          <span ref={eyebrowRef} className="eyebrow text-[#0B6E4F] mb-3 inline-block">
+          <span className="eyebrow text-[#0B6E4F] mb-3 inline-block">
             SEED TO SUCCESS
           </span>
 
           {/* Headline */}
-          <h1 ref={headlineRef} className="heading-headline text-3xl sm:text-5xl lg:text-6xl text-[#231F20] tracking-tight leading-[1.12]">
+          <h1 className="heading-headline text-3xl sm:text-5xl lg:text-6xl text-[#231F20] tracking-tight leading-[1.12]">
             Grow your future <span className="text-[#00693E]">with us</span>
           </h1>
 
           {/* Subline */}
-          <p ref={sublineRef} className="mt-4 text-sm sm:text-base lg:text-lg text-[#2C3E32] leading-relaxed">
+          <p className="mt-4 text-sm sm:text-base lg:text-lg text-[#2C3E32] leading-relaxed">
             {SITE_CONFIG.subline}
           </p>
 
           {/* CTA Buttons */}
-          <div ref={ctaRef} className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
+          <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
             <button
               onClick={onOpenEnrollModal}
               className="btn-primary"

@@ -27,7 +27,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     bestFor: "Best for students & curious beginners",
     description: "Get full access to live expert interactive sessions, comprehensive digital workbooks, and certified credentials to kickstart your agri journey.",
     includes: [
-      "3 Days Live Online Training (Evening batches)",
+      "3 Days Live Online Training",
       "Comprehensive Study Notes & Digital Resource Pack",
       "Live Interactive Q&A Support with Faculty",
       "Official Certificate of Completion (Digital & Verifiable)",

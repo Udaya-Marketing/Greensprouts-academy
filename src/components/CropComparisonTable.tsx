@@ -6,7 +6,7 @@ export default function CropComparisonTable() {
     {
       name: "Microgreens",
       tagline: "Superfood Business",
-      harvestTime: "7–10 Days",
+      harvestTime: "7–21 Days",
       minSpace: "15–30 sq ft (Balcony / Shelf)",
       initialInvestment: "₹1,500 – ₹3,500",
       profitPotential: "₹15,000 – ₹60,000 / mo",
@@ -28,7 +28,7 @@ export default function CropComparisonTable() {
     {
       name: "Mushroom Cultivation",
       tagline: "High-Yield Oyster & Shiitake",
-      harvestTime: "18–25 Days",
+      harvestTime: "45–80 Days",
       minSpace: "50–100 sq ft (Dark Room / Shed)",
       initialInvestment: "₹2,000 – ₹5,000",
       profitPotential: "₹20,000 – ₹80,000 / mo",
@@ -50,7 +50,7 @@ export default function CropComparisonTable() {
     {
       name: "Saffron & Specialty",
       tagline: "Indoor Controlled Environment",
-      harvestTime: "90–100 Days (Flower Flush)",
+      harvestTime: "100–160 Days (Flower Flush)",
       minSpace: "100–300 sq ft (Insulated Room)",
       initialInvestment: "₹50,000 – ₹1,50,000",
       profitPotential: "₹2–5 Lakh per kg",

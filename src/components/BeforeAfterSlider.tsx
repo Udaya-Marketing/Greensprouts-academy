@@ -51,7 +51,7 @@ export default function BeforeAfterSlider() {
       >
         {/* Background Image: AFTER (Thriving Garden) */}
         <img
-          src="/images/gallery/IMG_4691.jpg"
+          src="/images/gallery/IMG_5173.webp"
           alt="After: Thriving vertical hydroponic A-frame system with fresh basil and greens"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -62,7 +62,7 @@ export default function BeforeAfterSlider() {
           style={{ width: `${sliderPosition}%` }}
         >
           <img
-            src="/images/gallery/IMG_4067.jpg"
+            src="/images/gallery/IMG_4067.webp"
             alt="Before: Hands-on transplanting of young seedling plug into hydroponic channel"
             className="absolute inset-0 w-full h-full object-cover max-w-none"
             style={{ width: containerRef.current ? `${containerRef.current.offsetWidth}px` : "100%" }}

@@ -49,12 +49,12 @@ export const MISSION_PILLARS: MissionPillar[] = [
 
 export const TRAINERS: Trainer[] = [
   {
-    id: "kirubhakaran",
-    name: "Kirubhakaran",
+    id: "kirubhakaran rajendran",
+    name: "Kirubhakaran Rajendran",
     role: "Lead Trainer & Agronomist",
     qualification: "B.Sc Agriculture",
     experience: "4+ Years International Commercial Practice",
-    location: "India · Maldives · Oman",
+    location: "India  Maldives  Oman",
     image: "/images/team/Kirubha.png",
     shortBio: "Production and R&D specialist across three countries. Leads high-tech training in commercial hydroponics, circular aquaponics, exotic mushrooms, and indoor saffron.",
     expandedBio: "Kirubhakaran has managed commercial food security projects across India, the Maldives, and Oman. In the Maldives, he helped engineer hydroponic nutrient solutions for island communities cut off from fresh mainland supply. In Oman, he oversaw modern shade-house and open-field agriculture consultancy in challenging desert heat. At Green Sprouts Academy, he heads the curriculum development and live technical masterclasses, ensuring every student learns verified, field-tested farming techniques.",
@@ -73,12 +73,12 @@ export const TRAINERS: Trainer[] = [
       "Led hydroponic production deployments in the Maldives & Oman",
       "Pioneered indoor saffron flowering trials under controlled photoperiods",
       "Designed commercial nutrient formulations for high-yielding leafy greens & herbs",
-      "Trained over 1,200+ aspiring urban growers and commercial farmers",
+      "Trained aspiring urban growers and commercial farmers",
     ],
   },
   {
-    id: "vijay",
-    name: "Vijay",
+    id: "vijay murugesan",
+    name: "Vijay Murugesan",
     role: "Agronomist & Trainer",
     qualification: "B.Sc Agriculture",
     experience: "2.5 Years Pan-India Projects",
@@ -105,8 +105,8 @@ export const TRAINERS: Trainer[] = [
     ],
   },
   {
-    id: "surya",
-    name: "Surya",
+    id: "Suriya ramesh",
+    name: "Suriya Ramesh",
     role: "Agricultural Engineer · CEA Specialist",
     qualification: "B.E. Agriculture Engineering",
     experience: "2+ Years (Spireverse Engineering Design, Chennai)",
@@ -133,8 +133,8 @@ export const TRAINERS: Trainer[] = [
     ],
   },
   {
-    id: "pradeep",
-    name: "Pradeep",
+    id: "pradeep rajendran",
+    name: "Pradeep Rajendran",
     role: "Agronomist & Trainer · Blueberry Farm Specialist",
     qualification: "B.E. Agriculture Engineering",
     experience: "2+ Years Commercial Blueberry & CEA",

@@ -29,7 +29,7 @@ export default function ResourcesPage() {
       category: "Hydroponics",
       readTime: "5 min read",
       summary: "Why plants refuse to absorb nutrients when water pH rises above 6.8, and how a ₹300 digital tester prevents 90% of yellow leaf failures.",
-      image: "/images/gallery/IMG_0242.jpg",
+      image: "/images/gallery/IMG_0242.webp",
       date: "Oct 2026",
     },
     {
@@ -38,7 +38,7 @@ export default function ResourcesPage() {
       category: "Microgreens",
       readTime: "4 min read",
       summary: "Why putting a 2kg weight on top of your seed trays for 3 days doubles stem girth and prevents fungal damping off.",
-      image: "/images/gallery/IMG_4492.jpg",
+      image: "/images/gallery/IMG_3873.webp",
       date: "Oct 2026",
     },
     {
@@ -47,7 +47,7 @@ export default function ResourcesPage() {
       category: "Mushrooms",
       readTime: "6 min read",
       summary: "Rotate White Oyster in cool winter months and Milky Mushroom during 35°C Indian summer heat for steady monthly cashflow.",
-      image: "/images/gallery/WhatsApp Image 2026-10-22 at 4.16.20 PM (1).jpg",
+      image: "/images/gallery/WhatsApp Image 2026-10-22 at 4.16.20 PM (1).webp",
       date: "Oct 2026",
     },
     {
@@ -56,7 +56,7 @@ export default function ResourcesPage() {
       category: "Saffron CEA",
       readTime: "7 min read",
       summary: "A technical breakdown of air conditioning, dehumidification, and LED lux levels required to induce Crocus flowering indoors.",
-      image: "/images/gallery/IMG_0083.jpg",
+      image: "/images/gallery/saffron.webp",
       date: "Oct 2026",
     },
   ];
@@ -111,7 +111,7 @@ export default function ResourcesPage() {
         <div className="lg:col-span-4 flex justify-center">
           <div className="relative w-48 sm:w-56 aspect-[3/4] rounded-2xl overflow-hidden shadow-xl border-4 border-white bg-[#E8F0E2] rotate-2 hover:rotate-0 transition-transform">
             <img
-              src="/images/gallery/IMG_0603.jpg"
+              src="/images/gallery/IMG_0603.webp"
               alt="Microgreens Guide Cover"
               className="w-full h-full object-cover"
             />

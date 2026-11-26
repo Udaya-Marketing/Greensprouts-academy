@@ -1,16 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { VIDEO_FEEDBACK } from "./video-feedback-data";
 import "./stories-feedback.css";
 
 export default function VideoFeedback() {
+  const sectionRef = useRef<HTMLElement>(null);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [audibleIndex, setAudibleIndex] = useState<number | null>(null);
 
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const videos = section.querySelectorAll<HTMLVideoElement>("video[data-src]");
+    const loadAndPlay = (video: HTMLVideoElement) => {
+      const source = video.dataset.src;
+      if (!source) return;
+      video.src = source;
+      delete video.dataset.src;
+      video.load();
+      video.play().catch(() => {});
+    };
+
+    if (!("IntersectionObserver" in window)) {
+      videos.forEach(loadAndPlay);
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        loadAndPlay(entry.target as HTMLVideoElement);
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: "160px 0px" });
+
+    videos.forEach((video) => observer.observe(video));
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="gs-fb-video-section" aria-labelledby="gs-fb-video-title">
+    <section ref={sectionRef} className="gs-fb-video-section" aria-labelledby="gs-fb-video-title">
       <header className="gs-fb-video-heading">
         <h2
           id="gs-fb-video-title"
@@ -44,15 +76,14 @@ export default function VideoFeedback() {
                   <>
                     <video
                       className="gs-fb-video-player"
-                      src={video.src}
+                      data-src={video.src}
                       poster={video.poster || undefined}
                       controls={false}
                       disablePictureInPicture
-                      autoPlay
                       muted={!isAudible}
                       loop
                       playsInline
-                      preload="auto"
+                      preload="none"
                       role="button"
                       tabIndex={0}
                       aria-label={`${video.name} feedback video, ${isAudible ? "playing with sound" : "playing muted"}. Activate to ${isAudible ? "mute" : "hear"} sound.`}

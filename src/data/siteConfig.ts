@@ -29,7 +29,7 @@ export const SITE_CONFIG = {
 
   // Contact Placeholders (clearly labeled for user customization)
   contact: {
-    email: "hello@greensproutsacademy.com", // [PLACEHOLDER: email]
+    email: "academygreensprouts@gmail.com",
     phone: "+91 90275 68753",
     whatsapp: "919027568753",
     whatsappPrefill: "START",
@@ -43,6 +43,5 @@ export const SITE_CONFIG = {
       linkedin: "https://linkedin.com/company/greensproutsacademy", // [PLACEHOLDER]
       whatsappCommunity: "https://chat.whatsapp.com/placeholderCommunity", // [PLACEHOLDER]
     },
-    upiId: "greensprouts@upi", // [PLACEHOLDER: UPI ID]
   },
 };

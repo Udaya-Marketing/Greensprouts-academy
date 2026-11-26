@@ -83,38 +83,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <head>
-        {/* DNS + connection preconnects for Google Fonts */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-
-        {/* Preload Google Fonts stylesheet early to eliminate render-blocking */}
-        <link
-          rel="preload"
-          href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Schibsted+Grotesk:wght@400;500;600&display=swap"
-          as="style"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Schibsted+Grotesk:wght@400;500;600&display=swap"
-          rel="stylesheet"
-        />
-
         {/* Preload hero poster — largest above-fold image, fetch early */}
-        <link
-          rel="preload"
-          href="/assets/hero-poster.jpg"
-          as="image"
-          type="image/jpeg"
-        />
-
-        {/* Preload local display font so headings render without FOUT */}
-        <link
-          rel="preload"
-          href="/assets/fonts/Stumblebum-Regular.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

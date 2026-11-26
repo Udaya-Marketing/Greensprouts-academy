@@ -23,7 +23,7 @@ const CROPS_DATA: CropOption[] = [
   {
     id: "microgreens",
     name: "Microgreens (Superfood Business)",
-    tagline: "Fastest cash turnaround (7–10 days)",
+    tagline: "Fastest cash turnaround (7–21 days)",
     turnaround: "7–10 Days",
     retailPrice: "₹80 – ₹120 per 50g punnet",
     scalingData: {

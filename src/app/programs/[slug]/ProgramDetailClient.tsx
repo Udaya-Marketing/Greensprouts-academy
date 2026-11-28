@@ -26,7 +26,7 @@ import { PRICING_PLANS } from "@/data/pricing";
 import { useModals } from "@/components/ModalContext";
 
 export default function ProgramDetailClient({ program }: { program: Program }) {
-  const { openEnrollModal, openCertificateModal } = useModals();
+  const { openEnrollModal } = useModals();
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   const toggleFaq = (index: number) => {
@@ -82,12 +82,7 @@ export default function ProgramDetailClient({ program }: { program: Program }) {
             </div>
             <div className="col-span-2 sm:col-span-1">
               <span className="text-[#688E75] block">Credential:</span>
-              <button
-                onClick={openCertificateModal}
-                className="text-[#0B6E4F] font-bold underline flex items-center gap-1"
-              >
-                <span>Certificate Included</span>
-              </button>
+              <strong className="text-[#0B6E4F]">Certificate Included</strong>
             </div>
           </div>
 

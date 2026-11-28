@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { X, Award, ShieldCheck, Printer, Download, Sparkles, CheckCircle2 } from "lucide-react";
+import { X, Award, CheckCircle2 } from "lucide-react";
 import { SITE_CONFIG } from "@/data/siteConfig";
 
 interface CertificateModalProps {
@@ -14,10 +14,6 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
   const [courseName, setCourseName] = useState("Commercial Hydroponics & CEA Engineering");
 
   if (!isOpen) return null;
-
-  const handlePrint = () => {
-    window.print();
-  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
@@ -153,13 +149,6 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
           </div>
 
           <div className="flex items-center gap-2">
-            <button
-              onClick={handlePrint}
-              className="btn-secondary py-2 px-4 rounded-xl text-xs font-bold flex items-center gap-1.5"
-            >
-              <Printer className="w-3.5 h-3.5" />
-              <span>Print Preview</span>
-            </button>
             <button
               onClick={onClose}
               className="btn-primary py-2 px-4 rounded-xl text-xs font-bold"
